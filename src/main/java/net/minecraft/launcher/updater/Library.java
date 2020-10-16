@@ -5,6 +5,7 @@ import com.mojang.launcher.updater.download.ChecksummedDownloadable;
 import com.mojang.launcher.updater.download.Downloadable;
 import com.mojang.launcher.versions.ExtractRules;
 import net.minecraft.launcher.CompatibilityRule;
+import net.minecraft.launcher.LauncherConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
@@ -16,7 +17,11 @@ import java.util.*;
 
 public class Library
 {
-    private static final StrSubstitutor SUBSTITUTOR;
+    private static final StrSubstitutor SUBSTITUTOR = new StrSubstitutor(new HashMap<String, String>() {
+        {
+            this.put("arch", System.getProperty("os.arch").contains("64") ? "64" : "32");
+        }
+    });
     private String name;
     private List<CompatibilityRule> rules;
     private Map<OperatingSystem, String> natives;
@@ -145,21 +150,16 @@ public class Library
             return new ChecksummedDownloadable(proxy, url, local, ignoreLocalFiles);
         }
         if (this.downloads == null) {
-            final URL url = new URL("https://libraries.minecraft.net/" + path);
+            final URL url = new URL(LauncherConstants.URL_LIBRARY_BASE + path);
             return new ChecksummedDownloadable(proxy, url, local, ignoreLocalFiles);
         }
-        final DownloadInfo info = this.downloads.getDownloadInfo(Library.SUBSTITUTOR.replace(classifier));
+        final AbstractDownloadInfo info = this.downloads.getDownloadInfo(Library.SUBSTITUTOR.replace(classifier));
         if (info != null) {
-            return new PreHashedDownloadable(proxy, info.getUrl(), local, ignoreLocalFiles, info.getSha1());
+            final URL url2 = info.getUrl();
+            if (url2 != null) {
+                return new PreHashedDownloadable(proxy, url2, local, ignoreLocalFiles, info.getSha1());
+            }
         }
         return null;
-    }
-    
-    static {
-        SUBSTITUTOR = new StrSubstitutor(new HashMap<String, String>() {
-            {
-                this.put("arch", System.getProperty("os.arch").contains("64") ? "64" : "32");
-            }
-        });
     }
 }

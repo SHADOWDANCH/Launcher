@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 
 public class GameOutputTab extends JScrollPane implements GameOutputLogProcessor
 {
-    private static final Font MONOSPACED;
+    private static final Font MONOSPACED = new Font("Monospaced", Font.PLAIN, 12);
     private static final int MAX_LINE_COUNT = 1000;
     private final JTextArea console;
     private final JPopupMenu popupMenu;
@@ -40,7 +40,7 @@ public class GameOutputTab extends JScrollPane implements GameOutputLogProcessor
                     final StringSelection ss = new StringSelection(GameOutputTab.this.console.getText());
                     Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
                 }
-                catch (Exception ex) {}
+                catch (Exception ignored) { }
             }
         });
         this.console.setFont(GameOutputTab.MONOSPACED);
@@ -59,7 +59,7 @@ public class GameOutputTab extends JScrollPane implements GameOutputLogProcessor
                             try {
                                 document.remove(0, root.getElement(0).getEndOffset());
                             }
-                            catch (BadLocationException ex) {}
+                            catch (BadLocationException ignored) { }
                         }
                     }
                 });
@@ -98,7 +98,7 @@ public class GameOutputTab extends JScrollPane implements GameOutputLogProcessor
         try {
             document.insertString(document.getLength(), line, null);
         }
-        catch (BadLocationException ex) {}
+        catch (BadLocationException ignored) { }
         if (shouldScroll) {
             scrollBar.setValue(Integer.MAX_VALUE);
         }
@@ -114,9 +114,5 @@ public class GameOutputTab extends JScrollPane implements GameOutputLogProcessor
             }
         }
         this.print(logLine + "\n");
-    }
-    
-    static {
-        MONOSPACED = new Font("Monospaced", 0, 12);
     }
 }

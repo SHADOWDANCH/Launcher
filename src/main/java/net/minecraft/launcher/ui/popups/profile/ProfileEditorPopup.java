@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class ProfileEditorPopup extends JPanel implements ActionListener
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final Launcher minecraftLauncher;
     private final Profile originalProfile;
     private final Profile profile;
@@ -51,13 +51,13 @@ public class ProfileEditorPopup extends JPanel implements ActionListener
     
     protected void createInterface() {
         final JPanel standardPanels = new JPanel(true);
-        standardPanels.setLayout(new BoxLayout(standardPanels, 1));
+        standardPanels.setLayout(new BoxLayout(standardPanels, BoxLayout.Y_AXIS));
         standardPanels.add(this.profileInfoPanel);
         standardPanels.add(this.profileVersionPanel);
         standardPanels.add(this.javaInfoPanel);
         this.add(standardPanels, "Center");
         final JPanel buttonPannel = new JPanel();
-        buttonPannel.setLayout(new BoxLayout(buttonPannel, 0));
+        buttonPannel.setLayout(new BoxLayout(buttonPannel, BoxLayout.X_AXIS));
         buttonPannel.add(this.cancelButton);
         buttonPannel.add(Box.createGlue());
         buttonPannel.add(this.browseButton);
@@ -130,9 +130,5 @@ public class ProfileEditorPopup extends JPanel implements ActionListener
         dialog.pack();
         dialog.setLocationRelativeTo(frame);
         dialog.setVisible(true);
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

@@ -11,10 +11,10 @@ import java.util.Map;
 public final class HopperService
 {
     private static final String BASE_URL = "http://hopper.minecraft.net/crashes/";
-    private static final URL ROUTE_SUBMIT;
-    private static final URL ROUTE_PUBLISH;
-    private static final String[] INTERESTING_SYSTEM_PROPERTY_KEYS;
-    private static final Gson GSON;
+    private static final URL ROUTE_SUBMIT = Util.constantURL(BASE_URL + "submit_report/");
+    private static final URL ROUTE_PUBLISH = Util.constantURL(BASE_URL + "publish_report/");
+    private static final String[] INTERESTING_SYSTEM_PROPERTY_KEYS = new String[] { "os.version", "os.name", "os.arch", "java.version", "java.vendor", "sun.arch.data.model" };
+    private static final Gson GSON = new Gson();
     
     public static SubmitResponse submitReport(final Proxy proxy, final String report, final String product, final String version) throws IOException {
         return submitReport(proxy, report, product, version, null);
@@ -50,12 +50,5 @@ public final class HopperService
             throw new IOException(result.getError());
         }
         return result;
-    }
-    
-    static {
-        ROUTE_SUBMIT = Util.constantURL("http://hopper.minecraft.net/crashes/submit_report/");
-        ROUTE_PUBLISH = Util.constantURL("http://hopper.minecraft.net/crashes/publish_report/");
-        INTERESTING_SYSTEM_PROPERTY_KEYS = new String[] { "os.version", "os.name", "os.arch", "java.version", "java.vendor", "sun.arch.data.model" };
-        GSON = new Gson();
     }
 }

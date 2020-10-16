@@ -6,10 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.mojang.launcher.OperatingSystem;
 import com.mojang.launcher.updater.DateTypeAdapter;
 import com.mojang.launcher.updater.LowerCaseEnumTypeAdapterFactory;
-import com.mojang.launcher.versions.CompleteVersion;
-import com.mojang.launcher.versions.ReleaseType;
-import com.mojang.launcher.versions.ReleaseTypeAdapterFactory;
-import com.mojang.launcher.versions.Version;
+import com.mojang.launcher.versions.*;
 import net.minecraft.launcher.game.MinecraftReleaseType;
 import net.minecraft.launcher.game.MinecraftReleaseTypeFactory;
 
@@ -30,7 +27,7 @@ public abstract class VersionList
         final GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapterFactory(new LowerCaseEnumTypeAdapterFactory());
         builder.registerTypeAdapter(Date.class, new DateTypeAdapter());
-        builder.registerTypeAdapter(ReleaseType.class, new ReleaseTypeAdapterFactory(MinecraftReleaseTypeFactory.instance()));
+        builder.registerTypeAdapter(ReleaseType.class, new ReleaseTypeAdapterFactory<MinecraftReleaseType>(MinecraftReleaseTypeFactory.instance()));
         builder.registerTypeAdapter(Argument.class, new Argument.Serializer());
         builder.enableComplexMapKeySerialization();
         builder.setPrettyPrinting();

@@ -58,8 +58,7 @@ public class ProfileVersionPanel extends JPanel implements RefreshedVersionsList
                 constraints.gridwidth = 1;
                 constraints.weightx = 0.0;
                 constraints.fill = 0;
-                final GridBagConstraints gridBagConstraints = constraints;
-                ++gridBagConstraints.gridy;
+                ++constraints.gridy;
             }
         }
         this.add(new JLabel("Use version:"), constraints);
@@ -68,8 +67,7 @@ public class ProfileVersionPanel extends JPanel implements RefreshedVersionsList
         this.add(this.versionList, constraints);
         constraints.weightx = 0.0;
         constraints.fill = 0;
-        final GridBagConstraints gridBagConstraints2 = constraints;
-        ++gridBagConstraints2.gridy;
+        ++constraints.gridy;
         this.versionList.setRenderer(new VersionListRenderer());
     }
     
@@ -89,7 +87,7 @@ public class ProfileVersionPanel extends JPanel implements RefreshedVersionsList
                     if (this.isUpdating) {
                         return;
                     }
-                    if (e.getStateChange() == 1 && type.getType().getPopupWarning() != null) {
+                    if (e.getStateChange() == ItemEvent.SELECTED && type.getType().getPopupWarning() != null) {
                         final int result = JOptionPane.showConfirmDialog(((SwingUserInterface)ProfileVersionPanel.this.editor.getMinecraftLauncher().getUserInterface()).getFrame(), type.getType().getPopupWarning() + "\n\nAre you sure you want to continue?");
                         this.isUpdating = true;
                         if (result == 0) {

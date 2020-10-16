@@ -5,6 +5,9 @@ import java.awt.*;
 
 public abstract class SidebarGridForm extends JPanel
 {
+    protected SidebarGridForm() {
+    }
+    
     protected void createInterface() {
         final GridBagLayout layout = new GridBagLayout();
         final GridBagConstraints constraints = new GridBagConstraints();

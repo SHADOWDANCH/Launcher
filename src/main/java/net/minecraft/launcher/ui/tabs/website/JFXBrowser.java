@@ -26,7 +26,7 @@ import java.net.URI;
 
 public class JFXBrowser implements Browser
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final Object lock;
     private final JFXPanel fxPanel;
     private String urlToBrowseTo;
@@ -126,9 +126,5 @@ public class JFXBrowser implements Browser
                 this.browser.setPrefSize(size.getWidth(), size.getHeight());
             }
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

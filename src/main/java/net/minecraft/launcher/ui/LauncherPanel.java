@@ -36,14 +36,14 @@ public class LauncherPanel extends JPanel
     }
     
     protected void createInterface() {
-        this.add(this.createLauncherInterface(), "launcher");
-        this.add(this.createDirtInterface(), "loading");
-        this.add(this.createLoginInterface(), "login");
+        this.add(this.createLauncherInterface(), CARD_LAUNCHER);
+        this.add(this.createDirtInterface(), CARD_DIRT_BACKGROUND);
+        this.add(this.createLoginInterface(), CARD_LOGIN);
     }
     
     protected JPanel createLauncherInterface() {
         final JPanel result = new JPanel(new BorderLayout());
-        this.tabPanel.getBlog().setPage("http://mcupdate.tumblr.com");
+        this.tabPanel.getBlog().setPage(LauncherConstants.URL_BLOG);
         final boolean javaBootstrap = this.getMinecraftLauncher().getBootstrapVersion() < 100;
         boolean upgradableOS = OperatingSystem.getCurrentPlatform() == OperatingSystem.WINDOWS;
         if (OperatingSystem.getCurrentPlatform() == OperatingSystem.OSX) {
@@ -61,7 +61,7 @@ public class LauncherPanel extends JPanel
                             upgradableOS = true;
                         }
                     }
-                    catch (NumberFormatException ex) {}
+                    catch (NumberFormatException ignored) { }
                 }
             }
         }
@@ -136,7 +136,7 @@ public class LauncherPanel extends JPanel
     }
     
     public void setCard(final String card, final JPanel additional) {
-        if (card.equals("login")) {
+        if (card.equals(CARD_LOGIN)) {
             this.loginPanel.removeAll();
             this.loginPanel.add(additional);
         }

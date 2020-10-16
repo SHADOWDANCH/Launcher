@@ -24,8 +24,8 @@ public class PlayerInfoPanel extends JPanel implements RefreshedVersionsListener
     private final JButton switchUserButton;
     
     public PlayerInfoPanel(final Launcher minecraftLauncher) {
-        this.welcomeText = new JLabel("", 0);
-        this.versionText = new JLabel("", 0);
+        this.welcomeText = new JLabel("", SwingConstants.CENTER);
+        this.versionText = new JLabel("", SwingConstants.CENTER);
         this.switchUserButton = new JButton("Switch User");
         this.minecraftLauncher = minecraftLauncher;
         minecraftLauncher.getProfileManager().addRefreshedProfilesListener(this);
@@ -51,21 +51,18 @@ public class PlayerInfoPanel extends JPanel implements RefreshedVersionsListener
         this.add(this.welcomeText, constraints);
         constraints.gridwidth = 1;
         constraints.weightx = 0.0;
-        final GridBagConstraints gridBagConstraints = constraints;
-        ++gridBagConstraints.gridy;
+        ++constraints.gridy;
         constraints.weightx = 1.0;
         constraints.gridwidth = 2;
         this.add(this.versionText, constraints);
         constraints.gridwidth = 1;
         constraints.weightx = 0.0;
-        final GridBagConstraints gridBagConstraints2 = constraints;
-        ++gridBagConstraints2.gridy;
+        ++constraints.gridy;
         constraints.weightx = 0.5;
         constraints.fill = 0;
         this.add(this.switchUserButton, constraints);
         constraints.weightx = 0.0;
-        final GridBagConstraints gridBagConstraints3 = constraints;
-        ++gridBagConstraints3.gridy;
+        ++constraints.gridy;
     }
     
     @Override

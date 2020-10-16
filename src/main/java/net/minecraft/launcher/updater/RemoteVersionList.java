@@ -66,8 +66,8 @@ public class RemoteVersionList extends VersionList
     
     private static class RawVersionList
     {
-        private List<PartialVersion> versions;
-        private Map<MinecraftReleaseType, String> latest;
+        private final List<PartialVersion> versions;
+        private final Map<MinecraftReleaseType, String> latest;
         
         private RawVersionList() {
             this.versions = new ArrayList<PartialVersion>();

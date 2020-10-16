@@ -15,7 +15,10 @@ import java.util.Map;
 
 public class Http
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
+    
+    private Http() {
+    }
     
     public static String buildQuery(final Map<String, Object> query) {
         final StringBuilder builder = new StringBuilder();
@@ -54,9 +57,5 @@ public class Http
         finally {
             IOUtils.closeQuietly(inputStream);
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

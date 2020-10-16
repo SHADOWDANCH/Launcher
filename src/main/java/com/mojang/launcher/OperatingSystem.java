@@ -14,7 +14,7 @@ public enum OperatingSystem
     OSX("osx", new String[] { "mac" }), 
     UNKNOWN("unknown", new String[0]);
     
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final String name;
     private final String[] aliases;
     
@@ -59,7 +59,7 @@ public enum OperatingSystem
     public static void openLink(final URI link) {
         try {
             final Class<?> desktopClass = Class.forName("java.awt.Desktop");
-            final Object o = desktopClass.getMethod("getDesktop", (Class<?>[])new Class[0]).invoke(null, new Object[0]);
+            final Object o = desktopClass.getMethod("getDesktop").invoke(null);
             desktopClass.getMethod("browse", URI.class).invoke(o, link);
         }
         catch (Throwable e2) {
@@ -103,16 +103,12 @@ public enum OperatingSystem
             }
             try {
                 final Class<?> desktopClass = Class.forName("java.awt.Desktop");
-                final Object desktop = desktopClass.getMethod("getDesktop", (Class<?>[])new Class[0]).invoke(null, new Object[0]);
+                final Object desktop = desktopClass.getMethod("getDesktop").invoke(null);
                 desktopClass.getMethod("browse", URI.class).invoke(desktop, path.toURI());
             }
             catch (Throwable e3) {
                 OperatingSystem.LOGGER.error("Couldn't open " + path + " through Desktop.browse()", e3);
             }
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

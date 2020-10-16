@@ -38,7 +38,7 @@ public class PlayButtonPanel extends JPanel implements RefreshedVersionsListener
             public void actionPerformed(final ActionEvent e) {
                 final GameLaunchDispatcher dispatcher = PlayButtonPanel.this.getMinecraftLauncher().getLaunchDispatcher();
                 if (dispatcher.isRunningInSameFolder()) {
-                    final int result = JOptionPane.showConfirmDialog(((SwingUserInterface)PlayButtonPanel.this.getMinecraftLauncher().getUserInterface()).getFrame(), "You already have an instance of Minecraft running. If you launch another one in the same folder, they may clash and corrupt your saves.\nThis could cause many issues, in singleplayer or otherwise. We will not be responsible for anything that goes wrong.\nDo you want to start another instance of Minecraft, despite this?\nYou may solve this issue by launching the game in a different folder (see the \"Edit Profile\" button)", "Duplicate instance warning", 0);
+                    final int result = JOptionPane.showConfirmDialog(((SwingUserInterface)PlayButtonPanel.this.getMinecraftLauncher().getUserInterface()).getFrame(), "You already have an instance of Minecraft running. If you launch another one in the same folder, they may clash and corrupt your saves.\nThis could cause many issues, in singleplayer or otherwise. We will not be responsible for anything that goes wrong.\nDo you want to start another instance of Minecraft, despite this?\nYou may solve this issue by launching the game in a different folder (see the \"Edit Profile\" button)", "Duplicate instance warning", JOptionPane.YES_NO_OPTION);
                     if (result == 0) {
                         dispatcher.play();
                     }
@@ -59,14 +59,13 @@ public class PlayButtonPanel extends JPanel implements RefreshedVersionsListener
         constraints.gridy = 0;
         constraints.gridx = 0;
         this.add(this.playButton, constraints);
-        final GridBagConstraints gridBagConstraints = constraints;
-        ++gridBagConstraints.gridy;
+        ++constraints.gridy;
         constraints.weighty = 0.0;
         constraints.anchor = 10;
         final Font smalltextFont = this.demoHelpLink.getFont().deriveFont(this.demoHelpLink.getFont().getSize() - 2.0f);
-        this.demoHelpLink.setCursor(new Cursor(12));
+        this.demoHelpLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.demoHelpLink.setFont(smalltextFont);
-        this.demoHelpLink.setHorizontalAlignment(0);
+        this.demoHelpLink.setHorizontalAlignment(SwingConstants.CENTER);
         this.demoHelpLink.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
@@ -74,7 +73,7 @@ public class PlayButtonPanel extends JPanel implements RefreshedVersionsListener
             }
         });
         this.add(this.demoHelpLink, constraints);
-        this.playButton.setFont(this.playButton.getFont().deriveFont(1, this.playButton.getFont().getSize() + 2));
+        this.playButton.setFont(this.playButton.getFont().deriveFont(Font.BOLD, (float)(this.playButton.getFont().getSize() + 2)));
     }
     
     @Override

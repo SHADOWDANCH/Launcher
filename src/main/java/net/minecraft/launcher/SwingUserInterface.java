@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SwingUserInterface implements MinecraftUserInterface
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final long MAX_SHUTDOWN_TIME = 10000L;
     private final Launcher minecraftLauncher;
     private LauncherPanel launcherPanel;
@@ -91,7 +91,7 @@ public class SwingUserInterface implements MinecraftUserInterface
         this.frame.getContentPane().removeAll();
         this.frame.setTitle("Minecraft Launcher " + LauncherConstants.getVersionName() + LauncherConstants.PROPERTIES.getEnvironment().getTitle());
         this.frame.setPreferredSize(new Dimension(900, 580));
-        this.frame.setDefaultCloseOperation(2);
+        this.frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(final WindowEvent e) {
@@ -117,7 +117,7 @@ public class SwingUserInterface implements MinecraftUserInterface
                 this.frame.setIconImage(ImageIO.read(in));
             }
         }
-        catch (IOException ex) {}
+        catch (IOException ignored) { }
         this.launcherPanel = new LauncherPanel(this.minecraftLauncher);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -151,10 +151,10 @@ public class SwingUserInterface implements MinecraftUserInterface
     public void showOutdatedNotice() {
         final String error = "Sorry, but your launcher is outdated! Please redownload it at https://mojang.com/2013/06/minecraft-1-6-pre-release/";
         this.frame.getContentPane().removeAll();
-        final int result = JOptionPane.showOptionDialog(this.frame, error, "Outdated launcher", 0, 0, null, LauncherConstants.BOOTSTRAP_OUT_OF_DATE_BUTTONS, LauncherConstants.BOOTSTRAP_OUT_OF_DATE_BUTTONS[0]);
+        final int result = JOptionPane.showOptionDialog(this.frame, error, "Outdated launcher", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, LauncherConstants.BOOTSTRAP_OUT_OF_DATE_BUTTONS, LauncherConstants.BOOTSTRAP_OUT_OF_DATE_BUTTONS[0]);
         if (result == 0) {
             try {
-                OperatingSystem.openLink(new URI("https://mojang.com/2013/06/minecraft-1-6-pre-release/"));
+                OperatingSystem.openLink(new URI(LauncherConstants.URL_BOOTSTRAP_DOWNLOAD));
             }
             catch (URISyntaxException e) {
                 SwingUserInterface.LOGGER.error("Couldn't open bootstrap download link. Please visit https://mojang.com/2013/06/minecraft-1-6-pre-release/ manually.", e);
@@ -268,7 +268,7 @@ public class SwingUserInterface implements MinecraftUserInterface
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JOptionPane.showMessageDialog(SwingUserInterface.this.frame, reason, "Cannot play game", 0);
+                JOptionPane.showMessageDialog(SwingUserInterface.this.frame, reason, "Cannot play game", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
@@ -303,7 +303,16 @@ public class SwingUserInterface implements MinecraftUserInterface
     
     @Override
     public boolean shouldDowngradeProfiles() {
-        final int result = JOptionPane.showOptionDialog(this.frame, "It looks like you've used a newer launcher than this one! If you go back to using this one, we will need to reset your configuration.", "Outdated launcher", 0, 0, null, LauncherConstants.LAUNCHER_OUT_OF_DATE_BUTTONS, LauncherConstants.LAUNCHER_OUT_OF_DATE_BUTTONS[0]);
+        final int result = JOptionPane.showOptionDialog(
+                this.frame,
+                LauncherConstants.LAUNCHER_OUT_OF_DATE_MESSAGE,
+                "Outdated launcher",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.ERROR_MESSAGE,
+                null,
+                LauncherConstants.LAUNCHER_OUT_OF_DATE_BUTTONS,
+                LauncherConstants.LAUNCHER_OUT_OF_DATE_BUTTONS[0]
+        );
         return result == 1;
     }
     
@@ -314,9 +323,5 @@ public class SwingUserInterface implements MinecraftUserInterface
     
     public JFrame getFrame() {
         return this.frame;
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

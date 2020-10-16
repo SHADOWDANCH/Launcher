@@ -41,16 +41,14 @@ public class ProfileJavaPanel extends JPanel
         this.add(this.javaPathField, constraints);
         constraints.weightx = 0.0;
         constraints.fill = 0;
-        final GridBagConstraints gridBagConstraints = constraints;
-        ++gridBagConstraints.gridy;
+        ++constraints.gridy;
         this.add(this.javaArgsCustom, constraints);
         constraints.fill = 2;
         constraints.weightx = 1.0;
         this.add(this.javaArgsField, constraints);
         constraints.weightx = 0.0;
         constraints.fill = 0;
-        final GridBagConstraints gridBagConstraints2 = constraints;
-        ++gridBagConstraints2.gridy;
+        ++constraints.gridy;
     }
     
     protected void fillDefaultValues() {

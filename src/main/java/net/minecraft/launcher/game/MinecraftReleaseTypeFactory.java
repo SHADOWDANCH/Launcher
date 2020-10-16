@@ -7,7 +7,10 @@ import java.util.Iterator;
 
 public class MinecraftReleaseTypeFactory implements ReleaseTypeFactory<MinecraftReleaseType>
 {
-    private static final MinecraftReleaseTypeFactory FACTORY;
+    private static final MinecraftReleaseTypeFactory FACTORY = new MinecraftReleaseTypeFactory();
+    
+    private MinecraftReleaseTypeFactory() {
+    }
     
     @Override
     public MinecraftReleaseType getTypeByName(final String name) {
@@ -32,8 +35,5 @@ public class MinecraftReleaseTypeFactory implements ReleaseTypeFactory<Minecraft
     public static MinecraftReleaseTypeFactory instance() {
         return MinecraftReleaseTypeFactory.FACTORY;
     }
-    
-    static {
-        FACTORY = new MinecraftReleaseTypeFactory();
-    }
+
 }

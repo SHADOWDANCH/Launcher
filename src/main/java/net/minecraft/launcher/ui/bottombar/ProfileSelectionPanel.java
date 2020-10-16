@@ -54,8 +54,7 @@ public class ProfileSelectionPanel extends JPanel implements ActionListener, Ite
         constraints.gridx = 1;
         this.add(this.profileList, constraints);
         constraints.gridx = 0;
-        final GridBagConstraints gridBagConstraints = constraints;
-        ++gridBagConstraints.gridy;
+        ++constraints.gridy;
         final JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
         buttonPanel.setBorder(new EmptyBorder(2, 0, 0, 0));
         buttonPanel.add(this.newProfileButton);
@@ -63,8 +62,7 @@ public class ProfileSelectionPanel extends JPanel implements ActionListener, Ite
         constraints.gridwidth = 2;
         this.add(buttonPanel, constraints);
         constraints.gridwidth = 1;
-        final GridBagConstraints gridBagConstraints2 = constraints;
-        ++gridBagConstraints2.gridy;
+        ++constraints.gridy;
     }
     
     @Override

@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class CrashReportTab extends JPanel
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final Launcher minecraftLauncher;
     private final CompleteVersion version;
     private final File reportFile;
@@ -77,7 +77,7 @@ public class CrashReportTab extends JPanel
         final String[] options = { "Publish Crash Report", "Cancel" };
         final JLabel message = new JLabel();
         message.setText("<html><p>Sorry, but it looks like the game crashed and we don't know why.</p><p>Would you mind publishing this report so that " + (this.isModded ? "the mod authors" : "Mojang") + " can fix it?</p></html>");
-        final int result = JOptionPane.showOptionDialog(this, message, "Uhoh, something went wrong!", 0, 1, null, options, options[0]);
+        final int result = JOptionPane.showOptionDialog(this, message, "Uhoh, something went wrong!", JOptionPane.YES_NO_OPTION, 1, null, options, options[0]);
         if (result == 0) {
             try {
                 HopperService.publishReport(this.minecraftLauncher.getLauncher().getProxy(), this.hopperServiceResponse.getReport());
@@ -90,11 +90,11 @@ public class CrashReportTab extends JPanel
     
     private void showKnownProblemPopup() {
         if (this.hopperServiceResponse.getProblem().getUrl() == null) {
-            JOptionPane.showMessageDialog(this, this.hopperServiceResponse.getProblem().getDescription(), this.hopperServiceResponse.getProblem().getTitle(), 1);
+            JOptionPane.showMessageDialog(this, this.hopperServiceResponse.getProblem().getDescription(), this.hopperServiceResponse.getProblem().getTitle(), JOptionPane.INFORMATION_MESSAGE);
         }
         else {
             final String[] options = { "Fix The Problem", "Cancel" };
-            final int result = JOptionPane.showOptionDialog(this, this.hopperServiceResponse.getProblem().getDescription(), this.hopperServiceResponse.getProblem().getTitle(), 0, 1, null, options, options[0]);
+            final int result = JOptionPane.showOptionDialog(this, this.hopperServiceResponse.getProblem().getDescription(), this.hopperServiceResponse.getProblem().getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
             if (result == 0) {
                 try {
                     OperatingSystem.openLink(new URI(this.hopperServiceResponse.getProblem().getUrl()));
@@ -112,11 +112,7 @@ public class CrashReportTab extends JPanel
         this.reportEditor.setText(this.report);
         this.crashInfoPane.createInterface();
     }
-    
-    static {
-        LOGGER = LogManager.getLogger();
-    }
-    
+
     private class CrashInfoPane extends JPanel implements ActionListener
     {
         public static final String INFO_NORMAL = "<html><div style='width: 100%'><p><b>Uhoh, it looks like the game has crashed! Sorry for the inconvenience :(</b></p><p>Using magic and love, we've managed to gather some details about the crash and we will investigate this as soon as we can.</p><p>You can see the full report below.</p></div></html>";

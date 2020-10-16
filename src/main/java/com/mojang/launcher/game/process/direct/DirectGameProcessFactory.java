@@ -12,6 +12,14 @@ public class DirectGameProcessFactory implements GameProcessFactory
     @Override
     public GameProcess startGame(final GameProcessBuilder builder) throws IOException {
         final List<String> full = builder.getFullCommands();
-        return new DirectGameProcess(full, new ProcessBuilder(full).directory(builder.getDirectory()).redirectErrorStream(true).start(), builder.getSysOutFilter(), builder.getLogProcessor());
+        return new DirectGameProcess(
+                full,
+                new ProcessBuilder(full)
+                        .directory(builder.getDirectory())
+                        .redirectErrorStream(true)
+                        .start(),
+                builder.getSysOutFilter(),
+                builder.getLogProcessor()
+        );
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 public abstract class AbstractGameRunner implements GameRunner, DownloadListener
 {
-    protected static final Logger LOGGER;
+    protected static final Logger LOGGER = LogManager.getLogger();
     protected final Object lock;
     private final List<DownloadJob> jobs;
     protected CompleteVersion version;
@@ -207,9 +207,5 @@ public abstract class AbstractGameRunner implements GameRunner, DownloadListener
         synchronized (this.lock) {
             this.listeners.add(listener);
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

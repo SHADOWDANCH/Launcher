@@ -1,24 +1,30 @@
 package net.minecraft.launcher.updater;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
-public class DownloadInfo extends AbstractDownloadInfo
+public class LocalDownloadInfo extends AbstractDownloadInfo
 {
-    protected URL url;
+    protected String url;
     protected String sha1;
     protected int size;
     
-    public DownloadInfo() {
+    public LocalDownloadInfo() {
     }
     
-    public DownloadInfo(final DownloadInfo other) {
+    public LocalDownloadInfo(final LocalDownloadInfo other) {
         this.url = other.url;
         this.sha1 = other.sha1;
         this.size = other.size;
     }
     
     public URL getUrl() {
-        return this.url;
+        try {
+            return new URL(this.url);
+        }
+        catch (MalformedURLException e) {
+            return null;
+        }
     }
     
     public String getSha1() {

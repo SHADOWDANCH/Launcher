@@ -24,7 +24,7 @@ import java.awt.event.MouseEvent;
 
 public class LogInForm extends JPanel implements ActionListener
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final LogInPopup popup;
     private final JTextField usernameField;
     private final JPasswordField passwordField;
@@ -38,7 +38,11 @@ public class LogInForm extends JPanel implements ActionListener
         this.userDropdown = new JComboBox();
         this.userDropdownPanel = new JPanel();
         this.popup = popup;
-        this.authentication = popup.getMinecraftLauncher().getProfileManager().getAuthDatabase().getAuthenticationService().createUserAuthentication(Agent.MINECRAFT);
+        this.authentication = popup.getMinecraftLauncher()
+                .getProfileManager()
+                .getAuthDatabase()
+                .getAuthenticationService()
+                .createUserAuthentication(Agent.MINECRAFT);
         this.usernameField.addActionListener(this);
         this.passwordField.addActionListener(this);
         this.createInterface();
@@ -59,7 +63,7 @@ public class LogInForm extends JPanel implements ActionListener
         this.add(usernameLabel, constraints);
         this.add(this.usernameField, constraints);
         final JLabel forgotUsernameLabel = new JLabel("(Which do I use?)");
-        forgotUsernameLabel.setCursor(new Cursor(12));
+        forgotUsernameLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         forgotUsernameLabel.setFont(smalltextFont);
         forgotUsernameLabel.setHorizontalAlignment(4);
         forgotUsernameLabel.addMouseListener(new MouseAdapter() {
@@ -75,7 +79,7 @@ public class LogInForm extends JPanel implements ActionListener
         this.add(passwordLabel, constraints);
         this.add(this.passwordField, constraints);
         final JLabel forgotPasswordLabel = new JLabel("(Forgot Password?)");
-        forgotPasswordLabel.setCursor(new Cursor(12));
+        forgotPasswordLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         forgotPasswordLabel.setFont(smalltextFont);
         forgotPasswordLabel.setHorizontalAlignment(4);
         forgotPasswordLabel.addMouseListener(new MouseAdapter() {
@@ -206,9 +210,5 @@ public class LogInForm extends JPanel implements ActionListener
                 }
             });
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

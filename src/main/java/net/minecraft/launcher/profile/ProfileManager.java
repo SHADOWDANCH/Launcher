@@ -51,7 +51,7 @@ public class ProfileManager
     }
     
     public void saveProfiles() throws IOException {
-        final RawProfileList rawProfileList = new RawProfileList((Map)this.profiles, this.getSelectedProfile().getName(), this.selectedUser, this.launcher.getClientToken(), this.authDatabase);
+        final RawProfileList rawProfileList = new RawProfileList(this.profiles, this.getSelectedProfile().getName(), this.selectedUser, this.launcher.getClientToken(), this.authDatabase);
         FileUtils.writeStringToFile(this.profileFile, this.gson.toJson(rawProfileList));
     }
     
@@ -110,15 +110,15 @@ public class ProfileManager
     
     public Profile getSelectedProfile() {
         if (this.selectedProfile == null || !this.profiles.containsKey(this.selectedProfile)) {
-            if (this.profiles.get("(Default)") != null) {
-                this.selectedProfile = "(Default)";
+            if (this.profiles.get(DEFAULT_PROFILE_NAME) != null) {
+                this.selectedProfile = DEFAULT_PROFILE_NAME;
             }
             else if (this.profiles.size() > 0) {
                 this.selectedProfile = this.profiles.values().iterator().next().getName();
             }
             else {
-                this.selectedProfile = "(Default)";
-                this.profiles.put("(Default)", new Profile(this.selectedProfile));
+                this.selectedProfile = DEFAULT_PROFILE_NAME;
+                this.profiles.put(DEFAULT_PROFILE_NAME, new Profile(this.selectedProfile));
             }
         }
         return this.profiles.get(this.selectedProfile);

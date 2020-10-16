@@ -67,7 +67,7 @@ public class CompatibilityRule
         DISALLOW
     }
     
-    public class OSRestriction
+    public static class OSRestriction
     {
         private OperatingSystem name;
         private String version;
@@ -106,7 +106,7 @@ public class CompatibilityRule
                         return false;
                     }
                 }
-                catch (Throwable t) {}
+                catch (Throwable ignored) { }
             }
             if (this.arch != null) {
                 try {
@@ -116,7 +116,7 @@ public class CompatibilityRule
                         return false;
                     }
                 }
-                catch (Throwable t2) {}
+                catch (Throwable ignored) { }
             }
             return true;
         }

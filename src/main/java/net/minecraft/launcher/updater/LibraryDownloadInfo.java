@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class LibraryDownloadInfo
 {
-    private DownloadInfo artifact;
+    private LocalDownloadInfo artifact;
     private Map<String, DownloadInfo> classifiers;
     
     public LibraryDownloadInfo() {
@@ -21,7 +21,7 @@ public class LibraryDownloadInfo
         }
     }
     
-    public DownloadInfo getDownloadInfo(final String classifier) {
+    public AbstractDownloadInfo getDownloadInfo(final String classifier) {
         if (classifier == null) {
             return this.artifact;
         }

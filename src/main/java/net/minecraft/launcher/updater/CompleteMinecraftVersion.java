@@ -3,6 +3,7 @@ package net.minecraft.launcher.updater;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.mojang.authlib.UserAuthentication;
 import com.mojang.launcher.OperatingSystem;
 import com.mojang.launcher.game.process.GameProcessBuilder;
@@ -26,7 +27,7 @@ import java.util.*;
 
 public class CompleteMinecraftVersion implements CompleteVersion
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private String inheritsFrom;
     private String id;
     private Date time;
@@ -241,7 +242,7 @@ public class CompleteMinecraftVersion implements CompleteVersion
     }
     
     public CompleteMinecraftVersion resolve(final MinecraftVersionManager versionManager) throws IOException {
-        return this.resolve(versionManager, new HashSet<String>());
+        return this.resolve(versionManager, Sets.<String>newHashSet());
     }
     
     protected CompleteMinecraftVersion resolve(final MinecraftVersionManager versionManager, final Set<String> resolvedSoFar) throws IOException {
@@ -313,7 +314,7 @@ public class CompleteMinecraftVersion implements CompleteVersion
         return Objects.firstNonNull(this.savableVersion, this);
     }
     
-    public DownloadInfo getDownloadURL(final DownloadType type) {
+    public AbstractDownloadInfo getDownloadURL(final DownloadType type) {
         return this.downloads.get(type);
     }
     
@@ -368,9 +369,5 @@ public class CompleteMinecraftVersion implements CompleteVersion
                 builder.withArguments("-cp", substitutor.replace("${classpath}"));
             }
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

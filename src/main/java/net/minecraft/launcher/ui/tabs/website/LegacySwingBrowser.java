@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class LegacySwingBrowser implements Browser
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final JScrollPane scrollPane;
     private final JTextPane browser;
     
@@ -64,9 +64,5 @@ public class LegacySwingBrowser implements Browser
     
     @Override
     public void resize(final Dimension size) {
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

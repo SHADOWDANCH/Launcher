@@ -13,7 +13,7 @@ public class LauncherTabPanel extends JTabbedPane
     private CrashReportTab crashReportTab;
     
     public LauncherTabPanel(final Launcher minecraftLauncher) {
-        super(1);
+        super(SwingConstants.TOP);
         this.minecraftLauncher = minecraftLauncher;
         this.blog = new WebsiteTab(minecraftLauncher);
         this.console = new ConsoleTab(minecraftLauncher);

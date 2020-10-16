@@ -16,7 +16,7 @@ import java.util.zip.GZIPInputStream;
 
 public class AssetDownloadable extends Downloadable
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final String name;
     private final AssetIndex.AssetObject asset;
     private final String urlBase;
@@ -122,11 +122,7 @@ public class AssetDownloadable extends Downloadable
         FileUtils.deleteQuietly(localAsset);
         throw new RuntimeException("Had local compressed asset but unpacked hash did not match (expected " + this.asset.getHash() + " but had " + hash + ")");
     }
-    
-    static {
-        LOGGER = LogManager.getLogger();
-    }
-    
+
     private enum Status
     {
         DOWNLOADING("Downloading"), 
@@ -134,7 +130,7 @@ public class AssetDownloadable extends Downloadable
         
         private final String name;
         
-        private Status(final String name) {
+        Status(final String name) {
             this.name = name;
         }
     }

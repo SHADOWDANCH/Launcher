@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class DownloadJob
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final int MAX_ATTEMPTS_PER_FILE = 5;
     private static final int ASSUMED_AVERAGE_FILE_SIZE = 5242880;
     private final Queue<Downloadable> remainingFiles;
@@ -52,7 +52,7 @@ public class DownloadJob
         this.remainingFiles.addAll(downloadables);
         for (final Downloadable downloadable : downloadables) {
             if (downloadable.getExpectedSize() == 0L) {
-                downloadable.getMonitor().setTotal(5242880L);
+                downloadable.getMonitor().setTotal(ASSUMED_AVERAGE_FILE_SIZE);
             }
             else {
                 downloadable.getMonitor().setTotal(downloadable.getExpectedSize());
@@ -69,7 +69,7 @@ public class DownloadJob
             this.allFiles.add(downloadable);
             this.remainingFiles.add(downloadable);
             if (downloadable.getExpectedSize() == 0L) {
-                downloadable.getMonitor().setTotal(5242880L);
+                downloadable.getMonitor().setTotal(ASSUMED_AVERAGE_FILE_SIZE);
             }
             else {
                 downloadable.getMonitor().setTotal(downloadable.getExpectedSize());
@@ -109,7 +109,7 @@ public class DownloadJob
             if (downloadable.getStartTime() == 0L) {
                 downloadable.setStartTime(System.currentTimeMillis());
             }
-            if (downloadable.getNumAttempts() > 5) {
+            if (downloadable.getNumAttempts() > MAX_ATTEMPTS_PER_FILE) {
                 if (!this.ignoreFailures) {
                     this.failures.add(downloadable);
                 }
@@ -170,9 +170,5 @@ public class DownloadJob
     
     public StopWatch getStopWatch() {
         return this.stopWatch;
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

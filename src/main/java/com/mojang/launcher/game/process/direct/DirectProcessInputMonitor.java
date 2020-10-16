@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 
 public class DirectProcessInputMonitor extends Thread
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final DirectGameProcess process;
     private final GameOutputLogProcessor logProcessor;
     
@@ -25,7 +25,7 @@ public class DirectProcessInputMonitor extends Thread
     public void run() {
         final InputStreamReader reader = new InputStreamReader(this.process.getRawProcess().getInputStream());
         final BufferedReader buf = new BufferedReader(reader);
-        String line = null;
+        String line;
         while (this.process.isRunning()) {
             try {
                 while ((line = buf.readLine()) != null) {
@@ -46,9 +46,5 @@ public class DirectProcessInputMonitor extends Thread
         if (onExit != null) {
             onExit.onGameProcessEnded(this.process);
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

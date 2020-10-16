@@ -1,2 +1,2 @@
 # Compile
-`mvn clean package assembly:single`
+`mvn clean package`

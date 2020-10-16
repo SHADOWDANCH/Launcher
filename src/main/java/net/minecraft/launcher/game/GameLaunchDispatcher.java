@@ -143,7 +143,6 @@ public class GameLaunchDispatcher implements GameRunnerListener
                     if (currentGameDir.equals(otherGameDir)) {
                         return true;
                     }
-                    continue;
                 }
             }
         }
@@ -165,7 +164,7 @@ public class GameLaunchDispatcher implements GameRunnerListener
         private final String name;
         private final boolean canPlay;
         
-        private PlayStatus(final String name, final boolean canPlay) {
+        PlayStatus(final String name, final boolean canPlay) {
             this.name = name;
             this.canPlay = canPlay;
         }

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Main
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     
     public static void main(final String[] args) {
         Main.LOGGER.debug("main() called!");
@@ -31,8 +31,14 @@ public class Main
         parser.allowsUnrecognizedOptions();
         parser.accepts("winTen");
         final OptionSpec<String> proxyHostOption = parser.accepts("proxyHost").withRequiredArg();
-        final OptionSpec<Integer> proxyPortOption = parser.accepts("proxyPort").withRequiredArg().defaultsTo("8080", new String[0]).ofType(Integer.class);
-        final OptionSpec<File> workDirOption = parser.accepts("workDir").withRequiredArg().ofType(File.class).defaultsTo(getWorkingDirectory(), new File[0]);
+        final OptionSpec<Integer> proxyPortOption = parser.accepts("proxyPort")
+                .withRequiredArg()
+                .defaultsTo("8080")
+                .ofType(Integer.class);
+        final OptionSpec<File> workDirOption = parser.accepts("workDir")
+                .withRequiredArg()
+                .ofType(File.class)
+                .defaultsTo(getWorkingDirectory());
         final OptionSpec<String> nonOption = parser.nonOptions();
         final OptionSet optionSet = parser.parse(args);
         final List<String> leftoverArgs = optionSet.valuesOf(nonOption);
@@ -42,7 +48,7 @@ public class Main
             try {
                 proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(hostName, optionSet.valueOf(proxyPortOption)));
             }
-            catch (Exception ex) {}
+            catch (Exception ignored) { }
         }
         final File workingDirectory = optionSet.valueOf(workDirOption);
         workingDirectory.mkdirs();
@@ -57,7 +63,7 @@ public class Main
                 frame.setIconImage(ImageIO.read(in));
             }
         }
-        catch (IOException ex2) {}
+        catch (IOException ignored) { }
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -66,7 +72,7 @@ public class Main
             System.setProperty("os.version", "10.0");
         }
         Main.LOGGER.debug("Starting up launcher.");
-        final Launcher launcher = new Launcher(frame, workingDirectory, finalProxy, null, leftoverArgs.toArray(new String[leftoverArgs.size()]), 100);
+        final Launcher launcher = new Launcher(frame, workingDirectory, finalProxy, null, leftoverArgs.toArray(new String[leftoverArgs.size()]), LauncherConstants.SUPER_COOL_BOOTSTRAP_VERSION);
         if (optionSet.has("winTen")) {
             launcher.setWinTenHack();
         }
@@ -76,7 +82,7 @@ public class Main
     
     public static File getWorkingDirectory() {
         final String userHome = System.getProperty("user.home", ".");
-        File workingDirectory = null;
+        File workingDirectory;
         switch (OperatingSystem.getCurrentPlatform()) {
             case LINUX: {
                 workingDirectory = new File(userHome, ".minecraft/");
@@ -98,9 +104,5 @@ public class Main
             }
         }
         return workingDirectory;
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class ExistingUserListForm extends JPanel implements ActionListener
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final LogInPopup popup;
     private final JComboBox userDropdown;
     private final AuthenticationDatabase authDatabase;
@@ -153,9 +153,5 @@ public class ExistingUserListForm extends JPanel implements ActionListener
                 this.popup.remove(this);
             }
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

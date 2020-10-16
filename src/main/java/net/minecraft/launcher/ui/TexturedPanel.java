@@ -55,11 +55,12 @@ public class TexturedPanel extends JPanel
     }
     
     protected void overlayGradient(final int width, final int height, final Graphics2D graphics) {
-        final int gh = 1;
-        graphics.setPaint(new GradientPaint(new Point2D.Float(0.0f, 0.0f), new Color(553648127, true), new Point2D.Float(0.0f, gh), new Color(0, true)));
+        int gh = 1;
+        graphics.setPaint(new GradientPaint(new Point2D.Float(0.0f, 0.0f), new Color(553648127, true), new Point2D.Float(0.0f, (float)gh), new Color(0, true)));
         graphics.fillRect(0, 0, width, gh);
-        graphics.setPaint(new GradientPaint(new Point2D.Float(0.0f, 0.0f), new Color(0, true), new Point2D.Float(0.0f, height), new Color(1610612736, true)));
-        graphics.fillRect(0, 0, width, height);
+        gh = height;
+        graphics.setPaint(new GradientPaint(new Point2D.Float(0.0f, 0.0f), new Color(0, true), new Point2D.Float(0.0f, (float)gh), new Color(1610612736, true)));
+        graphics.fillRect(0, 0, width, gh);
     }
     
     static {

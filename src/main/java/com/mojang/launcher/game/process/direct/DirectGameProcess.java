@@ -56,7 +56,10 @@ public class DirectGameProcess extends AbstractGameProcess
     
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("process", this.process).add("monitor", this.monitor).toString();
+        return Objects.toStringHelper(this)
+                .add("process", this.process)
+                .add("monitor", this.monitor)
+                .toString();
     }
     
     @Override

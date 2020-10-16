@@ -50,7 +50,7 @@ public class ProgressContainer
         if (this.total == 0L) {
             return 0.0f;
         }
-        return this.current / this.total;
+        return this.current / (float) this.total;
     }
     
     @Override

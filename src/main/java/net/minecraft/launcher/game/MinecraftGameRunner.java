@@ -83,7 +83,7 @@ public class MinecraftGameRunner extends AbstractGameRunner implements GameProce
                     try {
                         FileUtils.forceDeleteOnExit(this.nativeDir);
                     }
-                    catch (Throwable t) {}
+                    catch (Throwable ignored) { }
                 }
             }
             super.setStatus(status);
@@ -150,7 +150,7 @@ public class MinecraftGameRunner extends AbstractGameRunner implements GameProce
         processBuilder.withSysOutFilter(new Predicate<String>() {
             @Override
             public boolean apply(final String input) {
-                return input.contains("#@!@#");
+                return input.contains(CRASH_IDENTIFIER_MAGIC);
             }
         });
         processBuilder.directory(gameDirectory);
@@ -161,7 +161,7 @@ public class MinecraftGameRunner extends AbstractGameRunner implements GameProce
         }
         else {
             final boolean is32Bit = "32".equals(System.getProperty("sun.arch.data.model"));
-            final String defaultArgument = is32Bit ? "-Xmx512M -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn128M" : "-Xmx1G -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn128M";
+            final String defaultArgument = is32Bit ? Profile.DEFAULT_JRE_ARGUMENTS_32BIT : Profile.DEFAULT_JRE_ARGUMENTS_64BIT;
             processBuilder.withArguments(defaultArgument.split(" "));
         }
         final CompatibilityRule.FeatureMatcher featureMatcher = this.createFeatureMatcher();
@@ -289,7 +289,7 @@ public class MinecraftGameRunner extends AbstractGameRunner implements GameProce
                 map.put("asset=" + entry.getKey(), path);
             }
         }
-        catch (IOException ex) {}
+        catch (IOException ignored) { }
         map.put("launcher_name", "java-minecraft-launcher");
         map.put("launcher_version", LauncherConstants.getVersionName());
         map.put("natives_directory", this.nativeDir.getAbsolutePath());
@@ -421,9 +421,9 @@ public class MinecraftGameRunner extends AbstractGameRunner implements GameProce
             final String[] sysOut = sysOutLines.toArray(new String[sysOutLines.size()]);
             for (int i = sysOut.length - 1; i >= 0; --i) {
                 final String line = sysOut[i];
-                final int pos = line.lastIndexOf("#@!@#");
-                if (pos >= 0 && pos < line.length() - "#@!@#".length() - 1) {
-                    errorText = line.substring(pos + "#@!@#".length()).trim();
+                final int pos = line.lastIndexOf(CRASH_IDENTIFIER_MAGIC);
+                if (pos >= 0 && pos < line.length() - CRASH_IDENTIFIER_MAGIC.length() - 1) {
+                    errorText = line.substring(pos + CRASH_IDENTIFIER_MAGIC.length()).trim();
                     break;
                 }
             }

@@ -41,7 +41,7 @@ public class LogInPopup extends JPanel implements ActionListener
     }
     
     protected void createInterface() {
-        this.setLayout(new BoxLayout(this, 1));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(new EmptyBorder(5, 15, 5, 15));
         try {
             final InputStream stream = LogInPopup.class.getResourceAsStream("/minecraft_logo.png");

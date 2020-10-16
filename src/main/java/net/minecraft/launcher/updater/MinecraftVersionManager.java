@@ -17,6 +17,7 @@ import com.mojang.launcher.updater.download.assets.AssetIndex;
 import com.mojang.launcher.versions.CompleteVersion;
 import com.mojang.launcher.versions.ReleaseType;
 import com.mojang.launcher.versions.Version;
+import net.minecraft.launcher.LauncherConstants;
 import net.minecraft.launcher.game.MinecraftReleaseType;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -34,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MinecraftVersionManager implements VersionManager
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final VersionList localVersionList;
     private final VersionList remoteVersionList;
     private final ThreadPoolExecutor executorService;
@@ -238,7 +239,7 @@ public class MinecraftVersionManager implements VersionManager
             try {
                 result = this.localVersionList.getCompleteVersion(syncInfo.getLatestVersion());
             }
-            catch (IOException ex) {}
+            catch (IOException ignored) { }
         }
         if (result != null) {
             return result;
@@ -259,9 +260,9 @@ public class MinecraftVersionManager implements VersionManager
         final Proxy proxy = ((RemoteVersionList)this.remoteVersionList).getProxy();
         job.addDownloadables(version.getRequiredDownloadables(OperatingSystem.getCurrentPlatform(), proxy, baseDirectory, false));
         final String jarFile = "versions/" + version.getJar() + "/" + version.getJar() + ".jar";
-        final DownloadInfo clientInfo = version.getDownloadURL(DownloadType.CLIENT);
+        final AbstractDownloadInfo clientInfo = version.getDownloadURL(DownloadType.CLIENT);
         if (clientInfo == null) {
-            job.addDownloadables(new EtagDownloadable(proxy, new URL("https://s3.amazonaws.com/Minecraft.Download/" + jarFile), new File(baseDirectory, jarFile), false));
+            job.addDownloadables(new EtagDownloadable(proxy, new URL(LauncherConstants.URL_JAR_FALLBACK + jarFile), new File(baseDirectory, jarFile), false));
         }
         else {
             job.addDownloadables(new PreHashedDownloadable(proxy, clientInfo.getUrl(), new File(baseDirectory, jarFile), false, clientInfo.getSha1()));
@@ -296,7 +297,7 @@ public class MinecraftVersionManager implements VersionManager
                 final String filename = object.getHash().substring(0, 2) + "/" + object.getHash();
                 final File file = new File(objectsFolder, filename);
                 if (!file.isFile() || FileUtils.sizeOf(file) != object.getSize()) {
-                    final Downloadable downloadable = new AssetDownloadable(proxy, entry.getValue(), object, "http://resources.download.minecraft.net/", objectsFolder);
+                    final Downloadable downloadable = new AssetDownloadable(proxy, entry.getValue(), object, LauncherConstants.URL_RESOURCE_BASE, objectsFolder);
                     downloadable.setExpectedSize(object.getSize());
                     result.add(downloadable);
                 }
@@ -331,10 +332,10 @@ public class MinecraftVersionManager implements VersionManager
     
     @Override
     public VersionSyncInfo syncVersion(final VersionSyncInfo syncInfo) throws IOException {
-        final CompleteVersion remoteVersion = this.getRemoteVersionList().getCompleteVersion(syncInfo.getRemoteVersion());
+        final CompleteMinecraftVersion remoteVersion = this.getRemoteVersionList().getCompleteVersion(syncInfo.getRemoteVersion());
         this.getLocalVersionList().removeVersion(syncInfo.getLocalVersion());
         this.getLocalVersionList().addVersion(remoteVersion);
-        ((LocalVersionList)this.getLocalVersionList()).saveVersion(((CompleteMinecraftVersion)remoteVersion).getSavableVersion());
+        ((LocalVersionList) this.getLocalVersionList()).saveVersion(remoteVersion.getSavableVersion());
         return this.getVersionSyncInfo(remoteVersion);
     }
     
@@ -361,9 +362,5 @@ public class MinecraftVersionManager implements VersionManager
             localVersionList.uninstallVersion(version);
             MinecraftVersionManager.LOGGER.info("Uninstalled " + version);
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

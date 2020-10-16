@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class LocalVersionList extends FileBasedVersionList
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final File baseDirectory;
     private final File baseVersionsDir;
     
@@ -104,9 +104,5 @@ public class LocalVersionList extends FileBasedVersionList
         if (dir.isDirectory()) {
             FileUtils.deleteQuietly(dir);
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

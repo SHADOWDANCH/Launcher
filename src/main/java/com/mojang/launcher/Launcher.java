@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Launcher
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final VersionManager versionManager;
     private final File workingDirectory;
     private final UserInterface ui;
@@ -81,6 +81,5 @@ public class Launcher
     
     static {
         Thread.currentThread().setContextClassLoader(Launcher.class.getClassLoader());
-        LOGGER = LogManager.getLogger();
     }
 }

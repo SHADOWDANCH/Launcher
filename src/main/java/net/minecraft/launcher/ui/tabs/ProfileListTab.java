@@ -4,7 +4,6 @@ import com.mojang.launcher.OperatingSystem;
 import net.minecraft.launcher.Launcher;
 import net.minecraft.launcher.LauncherConstants;
 import net.minecraft.launcher.SwingUserInterface;
-import net.minecraft.launcher.profile.AuthenticationDatabase;
 import net.minecraft.launcher.profile.Profile;
 import net.minecraft.launcher.profile.ProfileManager;
 import net.minecraft.launcher.profile.RefreshedProfilesListener;
@@ -28,7 +27,7 @@ import java.util.List;
 
 public class ProfileListTab extends JScrollPane implements RefreshedProfilesListener
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final int COLUMN_NAME = 0;
     private static final int COLUMN_VERSION = 1;
     private static final int NUM_COLUMNS = 2;
@@ -126,7 +125,7 @@ public class ProfileListTab extends JScrollPane implements RefreshedProfilesList
                     return;
                 }
                 final Profile current = ProfileListTab.this.dataModel.profiles.get(selection);
-                final int result = JOptionPane.showOptionDialog(((SwingUserInterface)ProfileListTab.this.minecraftLauncher.getUserInterface()).getFrame(), "Are you sure you want to delete this profile?", "Profile Confirmation", 0, 2, null, LauncherConstants.CONFIRM_PROFILE_DELETION_OPTIONS, LauncherConstants.CONFIRM_PROFILE_DELETION_OPTIONS[0]);
+                final int result = JOptionPane.showOptionDialog(((SwingUserInterface)ProfileListTab.this.minecraftLauncher.getUserInterface()).getFrame(), "Are you sure you want to delete this profile?", "Profile Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, LauncherConstants.CONFIRM_PROFILE_DELETION_OPTIONS, LauncherConstants.CONFIRM_PROFILE_DELETION_OPTIONS[0]);
                 if (result == 0) {
                     ProfileListTab.this.minecraftLauncher.getProfileManager().getProfiles().remove(current.getName());
                     try {
@@ -193,12 +192,8 @@ public class ProfileListTab extends JScrollPane implements RefreshedProfilesList
             }
         });
     }
-    
-    static {
-        LOGGER = LogManager.getLogger();
-    }
-    
-    private class ProfileTableModel extends AbstractTableModel
+
+    private static class ProfileTableModel extends AbstractTableModel
     {
         private final List<Profile> profiles;
         
@@ -213,7 +208,7 @@ public class ProfileListTab extends JScrollPane implements RefreshedProfilesList
         
         @Override
         public int getColumnCount() {
-            return 2;
+            return NUM_COLUMNS;
         }
         
         @Override
@@ -224,10 +219,10 @@ public class ProfileListTab extends JScrollPane implements RefreshedProfilesList
         @Override
         public String getColumnName(final int column) {
             switch (column) {
-                case 1: {
+                case COLUMN_VERSION: {
                     return "Version";
                 }
-                case 0: {
+                case COLUMN_NAME: {
                     return "Version name";
                 }
                 default: {
@@ -239,12 +234,12 @@ public class ProfileListTab extends JScrollPane implements RefreshedProfilesList
         @Override
         public Object getValueAt(final int rowIndex, final int columnIndex) {
             final Profile profile = this.profiles.get(rowIndex);
-            final AuthenticationDatabase authDatabase = ProfileListTab.this.minecraftLauncher.getProfileManager().getAuthDatabase();
+            //final AuthenticationDatabase authDatabase = ProfileListTab.this.minecraftLauncher.getProfileManager().getAuthDatabase();
             switch (columnIndex) {
-                case 0: {
+                case COLUMN_NAME: {
                     return profile.getName();
                 }
-                case 1: {
+                case COLUMN_VERSION: {
                     if (profile.getLastVersionId() == null) {
                         return "(Latest version)";
                     }

@@ -53,16 +53,14 @@ public class ProfileInfoPanel extends JPanel
         this.add(this.profileName, constraints);
         constraints.weightx = 0.0;
         constraints.fill = 0;
-        final GridBagConstraints gridBagConstraints = constraints;
-        ++gridBagConstraints.gridy;
+        ++constraints.gridy;
         this.add(this.gameDirCustom, constraints);
         constraints.fill = 2;
         constraints.weightx = 1.0;
         this.add(this.gameDirField, constraints);
         constraints.weightx = 0.0;
         constraints.fill = 0;
-        final GridBagConstraints gridBagConstraints2 = constraints;
-        ++gridBagConstraints2.gridy;
+        ++constraints.gridy;
         final JPanel resolutionPanel = new JPanel();
         resolutionPanel.setLayout(new BoxLayout(resolutionPanel, 0));
         resolutionPanel.add(this.resolutionWidth);
@@ -76,8 +74,7 @@ public class ProfileInfoPanel extends JPanel
         this.add(resolutionPanel, constraints);
         constraints.weightx = 0.0;
         constraints.fill = 0;
-        final GridBagConstraints gridBagConstraints3 = constraints;
-        ++gridBagConstraints3.gridy;
+        ++constraints.gridy;
         constraints.fill = 2;
         constraints.weightx = 1.0;
         constraints.gridwidth = 0;
@@ -85,16 +82,14 @@ public class ProfileInfoPanel extends JPanel
         constraints.gridwidth = 1;
         constraints.weightx = 0.0;
         constraints.fill = 0;
-        final GridBagConstraints gridBagConstraints4 = constraints;
-        ++gridBagConstraints4.gridy;
+        ++constraints.gridy;
         this.add(this.launcherVisibilityCustom, constraints);
         constraints.fill = 2;
         constraints.weightx = 1.0;
         this.add(this.launcherVisibilityOption, constraints);
         constraints.weightx = 0.0;
         constraints.fill = 0;
-        final GridBagConstraints gridBagConstraints5 = constraints;
-        ++gridBagConstraints5.gridy;
+        ++constraints.gridy;
         for (final LauncherVisibilityRule value : LauncherVisibilityRule.values()) {
             this.launcherVisibilityOption.addItem(value);
         }
@@ -237,12 +232,7 @@ public class ProfileInfoPanel extends JPanel
     
     private void updateHopper() {
         final Profile profile = this.editor.getProfile();
-        if (this.useHopper.isSelected()) {
-            profile.setUseHopperCrashService(true);
-        }
-        else {
-            profile.setUseHopperCrashService(false);
-        }
+        profile.setUseHopperCrashService(this.useHopper.isSelected());
     }
     
     private void updateProfileName() {

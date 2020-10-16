@@ -76,8 +76,8 @@ public class AuthenticationDatabase
     }
     
     public static String getUserFromDemoUUID(final String uuid) {
-        if (uuid.startsWith("demo-") && uuid.length() > "demo-".length()) {
-            return "Demo User " + uuid.substring("demo-".length());
+        if (uuid.startsWith(DEMO_UUID_PREFIX) && uuid.length() > DEMO_UUID_PREFIX.length()) {
+            return "Demo User " + uuid.substring(DEMO_UUID_PREFIX.length());
         }
         return "Demo User";
     }
@@ -135,9 +135,8 @@ public class AuthenticationDatabase
         
         @Override
         public JsonElement serialize(final AuthenticationDatabase src, final Type typeOfSrc, final JsonSerializationContext context) {
-            final Map<String, UserAuthentication> services = src.authById;
             final Map<String, Map<String, Object>> credentials = new HashMap<String, Map<String, Object>>();
-            for (final Map.Entry<String, UserAuthentication> entry : services.entrySet()) {
+            for (final Map.Entry<String, UserAuthentication> entry : src.authById.entrySet()) {
                 credentials.put(entry.getKey(), entry.getValue().saveForStorage());
             }
             return context.serialize(credentials);

@@ -36,9 +36,9 @@ public class StatusPanelForm extends SidebarGridForm
     
     @Override
     protected void populateGrid(final GridBagConstraints constraints) {
-        this.add(new JLabel("Multiplayer:", 2), constraints, 0, 0, 0, 1, 17);
+        this.add(new JLabel("Multiplayer:", SwingConstants.LEFT), constraints, 0, 0, 0, 1, 17);
         this.add(this.sessionStatus, constraints, 1, 0, 1, 1);
-        this.add(new JLabel("Login:", 2), constraints, 0, 1, 0, 1, 17);
+        this.add(new JLabel("Login:", SwingConstants.LEFT), constraints, 0, 1, 0, 1, 17);
         this.add(this.loginStatus, constraints, 1, 1, 1, 1);
     }
     

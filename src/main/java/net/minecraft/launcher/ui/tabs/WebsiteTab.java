@@ -19,7 +19,7 @@ import java.net.URLClassLoader;
 
 public class WebsiteTab extends JPanel
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final Browser browser;
     private final Launcher minecraftLauncher;
     
@@ -89,9 +89,5 @@ public class WebsiteTab extends JPanel
         catch (ClassNotFoundException e) {
             return false;
         }
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

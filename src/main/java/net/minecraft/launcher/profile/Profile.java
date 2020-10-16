@@ -13,9 +13,9 @@ public class Profile implements Comparable<Profile>
 {
     public static final String DEFAULT_JRE_ARGUMENTS_64BIT = "-Xmx1G -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn128M";
     public static final String DEFAULT_JRE_ARGUMENTS_32BIT = "-Xmx512M -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn128M";
-    public static final Resolution DEFAULT_RESOLUTION;
-    public static final LauncherVisibilityRule DEFAULT_LAUNCHER_VISIBILITY;
-    public static final Set<MinecraftReleaseType> DEFAULT_RELEASE_TYPES;
+    public static final Resolution DEFAULT_RESOLUTION = new Resolution(854, 480);
+    public static final LauncherVisibilityRule DEFAULT_LAUNCHER_VISIBILITY = LauncherVisibilityRule.CLOSE_LAUNCHER;
+    public static final Set<MinecraftReleaseType> DEFAULT_RELEASE_TYPES = Sets.newHashSet(MinecraftReleaseType.RELEASE);
     private String name;
     private File gameDir;
     private String lastVersionId;
@@ -124,10 +124,10 @@ public class Profile implements Comparable<Profile>
     public VersionFilter<MinecraftReleaseType> getVersionFilter() {
         final VersionFilter<MinecraftReleaseType> filter = new VersionFilter<MinecraftReleaseType>(MinecraftReleaseTypeFactory.instance()).setMaxCount(Integer.MAX_VALUE);
         if (this.allowedReleaseTypes == null) {
-            filter.onlyForTypes((MinecraftReleaseType[])Profile.DEFAULT_RELEASE_TYPES.toArray(new MinecraftReleaseType[Profile.DEFAULT_RELEASE_TYPES.size()]));
+            filter.onlyForTypes(Profile.DEFAULT_RELEASE_TYPES.toArray(new MinecraftReleaseType[Profile.DEFAULT_RELEASE_TYPES.size()]));
         }
         else {
-            filter.onlyForTypes((MinecraftReleaseType[])this.allowedReleaseTypes.toArray(new MinecraftReleaseType[this.allowedReleaseTypes.size()]));
+            filter.onlyForTypes(this.allowedReleaseTypes.toArray(new MinecraftReleaseType[this.allowedReleaseTypes.size()]));
         }
         return filter;
     }
@@ -147,13 +147,7 @@ public class Profile implements Comparable<Profile>
         }
         return this.getName().compareTo(o.getName());
     }
-    
-    static {
-        DEFAULT_RESOLUTION = new Resolution(854, 480);
-        DEFAULT_LAUNCHER_VISIBILITY = LauncherVisibilityRule.CLOSE_LAUNCHER;
-        DEFAULT_RELEASE_TYPES = Sets.newHashSet(MinecraftReleaseType.RELEASE);
-    }
-    
+
     public static class Resolution
     {
         private int width;

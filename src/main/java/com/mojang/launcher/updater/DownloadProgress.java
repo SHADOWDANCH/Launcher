@@ -10,7 +10,7 @@ public class DownloadProgress
     public DownloadProgress(final long current, final long total, final String status) {
         this.current = current;
         this.total = total;
-        this.percent = current / total;
+        this.percent = current / (float) total;
         this.status = status;
     }
     

@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 
 public abstract class Downloadable
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final URL url;
     private final File target;
     private final boolean forceDownload;
@@ -113,7 +113,7 @@ public abstract class Downloadable
             try {
                 closeable.close();
             }
-            catch (IOException ex) {}
+            catch (IOException ignored) {}
         }
     }
     
@@ -171,9 +171,5 @@ public abstract class Downloadable
     
     public void setEndTime(final long endTime) {
         this.endTime = endTime;
-    }
-    
-    static {
-        LOGGER = LogManager.getLogger();
     }
 }

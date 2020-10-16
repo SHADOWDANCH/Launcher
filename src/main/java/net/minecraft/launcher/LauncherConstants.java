@@ -17,7 +17,7 @@ public class LauncherConstants
 {
     public static final int VERSION_FORMAT = 21;
     public static final int PROFILES_FORMAT = 1;
-    public static final URI URL_REGISTER;
+    public static final URI URL_REGISTER = constantURI("https://account.mojang.com/register");
     public static final String URL_JAR_FALLBACK = "https://s3.amazonaws.com/Minecraft.Download/";
     public static final String URL_RESOURCE_BASE = "http://resources.download.minecraft.net/";
     public static final String URL_LIBRARY_BASE = "https://libraries.minecraft.net/";
@@ -28,20 +28,20 @@ public class LauncherConstants
     public static final int MINIMUM_BOOTSTRAP_SUPPORTED = 4;
     public static final int SUPER_COOL_BOOTSTRAP_VERSION = 100;
     public static final String URL_BOOTSTRAP_DOWNLOAD = "https://mojang.com/2013/06/minecraft-1-6-pre-release/";
-    public static final String[] BOOTSTRAP_OUT_OF_DATE_BUTTONS;
+    public static final String[] BOOTSTRAP_OUT_OF_DATE_BUTTONS = new String[] { "Go to URL", "Close" };
     public static final String LAUNCHER_OUT_OF_DATE_MESSAGE = "It looks like you've used a newer launcher than this one! If you go back to using this one, we will need to reset your configuration.";
-    public static final String[] LAUNCHER_OUT_OF_DATE_BUTTONS;
+    public static final String[] LAUNCHER_OUT_OF_DATE_BUTTONS = new String[] { "Nevermind, close this launcher", "I'm sure. Reset my settings." };
     public static final String LAUNCHER_NOT_NATIVE_MESSAGE = "This shortcut to the launcher is out of date. Please delete it and remake it to the new launcher, which we will start for you now.";
-    public static final String[] CONFIRM_PROFILE_DELETION_OPTIONS;
-    public static final URI URL_FORGOT_USERNAME;
-    public static final URI URL_FORGOT_PASSWORD_MINECRAFT;
-    public static final URI URL_FORGOT_MIGRATED_EMAIL;
-    public static final URI URL_DEMO_HELP;
-    public static final URI URL_UPGRADE_WINDOWS;
-    public static final URI URL_UPGRADE_OSX;
+    public static final String[] CONFIRM_PROFILE_DELETION_OPTIONS = new String[] { "Delete profile", "Cancel" };
+    public static final URI URL_FORGOT_USERNAME = constantURI("http://help.mojang.com/customer/portal/articles/1233873?ref=launcher");
+    public static final URI URL_FORGOT_PASSWORD_MINECRAFT = constantURI("http://help.mojang.com/customer/portal/articles/329524-change-or-forgot-password?ref=launcher");
+    public static final URI URL_FORGOT_MIGRATED_EMAIL = constantURI("http://help.mojang.com/customer/portal/articles/1205055-minecraft-launcher-error---migrated-account?ref=launcher");
+    public static final URI URL_DEMO_HELP = constantURI("https://help.mojang.com/customer/portal/articles/1218766-can-only-play-minecraft-demo?ref=launcher");
+    public static final URI URL_UPGRADE_WINDOWS = constantURI("https://launcher.mojang.com/download/MinecraftInstaller.msi");
+    public static final URI URL_UPGRADE_OSX = constantURI("https://launcher.mojang.com/download/Minecraft.dmg");
     public static final int MAX_NATIVES_LIFE_IN_SECONDS = 3600;
     public static final int MAX_SKIN_LIFE_IN_SECONDS = 604800;
-    public static final LauncherProperties PROPERTIES;
+    public static final LauncherProperties PROPERTIES = getProperties();
     
     public static URI constantURI(final String input) {
         try {
@@ -81,21 +81,7 @@ public class LauncherConstants
         }
         return new LauncherProperties();
     }
-    
-    static {
-        URL_REGISTER = constantURI("https://account.mojang.com/register");
-        BOOTSTRAP_OUT_OF_DATE_BUTTONS = new String[] { "Go to URL", "Close" };
-        LAUNCHER_OUT_OF_DATE_BUTTONS = new String[] { "Nevermind, close this launcher", "I'm sure. Reset my settings." };
-        CONFIRM_PROFILE_DELETION_OPTIONS = new String[] { "Delete profile", "Cancel" };
-        URL_FORGOT_USERNAME = constantURI("http://help.mojang.com/customer/portal/articles/1233873?ref=launcher");
-        URL_FORGOT_PASSWORD_MINECRAFT = constantURI("http://help.mojang.com/customer/portal/articles/329524-change-or-forgot-password?ref=launcher");
-        URL_FORGOT_MIGRATED_EMAIL = constantURI("http://help.mojang.com/customer/portal/articles/1205055-minecraft-launcher-error---migrated-account?ref=launcher");
-        URL_DEMO_HELP = constantURI("https://help.mojang.com/customer/portal/articles/1218766-can-only-play-minecraft-demo?ref=launcher");
-        URL_UPGRADE_WINDOWS = constantURI("https://launcher.mojang.com/download/MinecraftInstaller.msi");
-        URL_UPGRADE_OSX = constantURI("https://launcher.mojang.com/download/Minecraft.dmg");
-        PROPERTIES = getProperties();
-    }
-    
+
     public enum LauncherEnvironment
     {
         PRODUCTION(""), 
@@ -115,8 +101,8 @@ public class LauncherConstants
     
     public static class LauncherProperties
     {
-        private LauncherEnvironment environment;
-        private URL versionManifest;
+        private final LauncherEnvironment environment;
+        private final URL versionManifest;
         
         public LauncherProperties() {
             this.environment = LauncherEnvironment.PRODUCTION;

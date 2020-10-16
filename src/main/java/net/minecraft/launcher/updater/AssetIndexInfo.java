@@ -15,7 +15,7 @@ public class AssetIndexInfo extends DownloadInfo
     public AssetIndexInfo(final String id) {
         this.known = true;
         this.id = id;
-        this.url = LauncherConstants.constantURL("https://s3.amazonaws.com/Minecraft.Download/indexes/" + id + ".json");
+        this.url = LauncherConstants.constantURL(LauncherConstants.URL_JAR_FALLBACK + "indexes/" + id + ".json");
         this.known = false;
     }
     

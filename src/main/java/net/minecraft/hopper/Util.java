@@ -29,7 +29,7 @@ public class Util
         writer.write(paramAsBytes);
         writer.flush();
         writer.close();
-        InputStream stream = null;
+        InputStream stream;
         try {
             stream = connection.getInputStream();
         }

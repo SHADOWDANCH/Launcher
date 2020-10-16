@@ -43,7 +43,7 @@ import java.util.*;
 public class Launcher
 {
     private static Launcher INSTANCE;
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     private final com.mojang.launcher.Launcher launcher;
     private final Integer bootstrapVersion;
     private final MinecraftUserInterface userInterface;
@@ -87,7 +87,7 @@ public class Launcher
         Launcher.LOGGER.info("System.getProperty('sun.arch.data.model') == '" + System.getProperty("sun.arch.data.model") + "'");
         Launcher.LOGGER.info("proxy == " + proxy);
         this.launchDispatcher = new GameLaunchDispatcher(this, this.processArgs(args));
-        this.launcher = new com.mojang.launcher.Launcher(this.userInterface, workingDirectory, proxy, proxyAuth, new MinecraftVersionManager(new LocalVersionList(workingDirectory), new RemoteVersionList(LauncherConstants.PROPERTIES.getVersionManifest(), proxy)), Agent.MINECRAFT, MinecraftReleaseTypeFactory.instance(), 21);
+        this.launcher = new com.mojang.launcher.Launcher(this.userInterface, workingDirectory, proxy, proxyAuth, new MinecraftVersionManager(new LocalVersionList(workingDirectory), new RemoteVersionList(LauncherConstants.PROPERTIES.getVersionManifest(), proxy)), Agent.MINECRAFT, MinecraftReleaseTypeFactory.instance(), LauncherConstants.VERSION_FORMAT);
         this.profileManager = new ProfileManager(this);
         ((SwingUserInterface)this.userInterface).initializeFrame();
         this.refreshVersionsAndProfiles();
@@ -108,7 +108,7 @@ public class Launcher
     }
     
     public void runNativeLauncher(final File executable, final String[] args) {
-        final ProcessBuilder pb = new ProcessBuilder(new String[] { "cmd", "/c", executable.getAbsolutePath() });
+        final ProcessBuilder pb = new ProcessBuilder("cmd", "/c", executable.getAbsolutePath());
         try {
             pb.start();
         }
@@ -174,7 +174,7 @@ public class Launcher
                             loggedIn = true;
                         }
                     }
-                    catch (RuntimeException ex) {}
+                    catch (RuntimeException ignored) { }
                     if (!loggedIn && authDatabase.getByName(Launcher.this.requestedUser) != null) {
                         final UserAuthentication auth2 = authDatabase.getByName(Launcher.this.requestedUser);
                         if (auth2.getSelectedProfile() != null) {
@@ -358,7 +358,7 @@ public class Launcher
         final File virtualsDir = new File(assetsDir, "virtual");
         final DateTypeAdapter dateAdapter = new DateTypeAdapter();
         final Calendar calendar = Calendar.getInstance();
-        calendar.add(5, -5);
+        calendar.add(Calendar.DATE, -5);
         final Date cutoff = calendar.getTime();
         if (!virtualsDir.isDirectory()) {
             return;
@@ -428,7 +428,7 @@ public class Launcher
             }
         }
         final Calendar calendar = Calendar.getInstance();
-        calendar.add(5, -7);
+        calendar.add(Calendar.DATE, -7);
         final Date cutoff = calendar.getTime();
         for (final VersionSyncInfo versionSyncInfo : this.getLauncher().getVersionManager().getInstalledVersions()) {
             if (versionSyncInfo.getLocalVersion() instanceof CompleteMinecraftVersion) {
@@ -521,6 +521,5 @@ public class Launcher
     
     static {
         Thread.currentThread().setContextClassLoader(Launcher.class.getClassLoader());
-        LOGGER = LogManager.getLogger();
     }
 }

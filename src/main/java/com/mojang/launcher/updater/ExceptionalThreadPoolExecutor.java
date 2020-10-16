@@ -8,7 +8,7 @@ import java.util.concurrent.*;
 
 public class ExceptionalThreadPoolExecutor extends ThreadPoolExecutor
 {
-    private static final Logger LOGGER;
+    private static final Logger LOGGER = LogManager.getLogger();
     
     public ExceptionalThreadPoolExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new LinkedBlockingQueue<Runnable>(), new ThreadFactoryBuilder().setDaemon(true).build());
@@ -16,7 +16,6 @@ public class ExceptionalThreadPoolExecutor extends ThreadPoolExecutor
     
     @Override
     protected void afterExecute(final Runnable r, Throwable t) {
-        super.afterExecute(r, t);
         if (t == null && r instanceof Future) {
             try {
                 final Future<?> future = (Future<?>)r;
@@ -34,6 +33,7 @@ public class ExceptionalThreadPoolExecutor extends ThreadPoolExecutor
                 Thread.currentThread().interrupt();
             }
         }
+        super.afterExecute(r, t); // Changed by SHADOWDAN_
     }
     
     @Override
@@ -45,12 +45,8 @@ public class ExceptionalThreadPoolExecutor extends ThreadPoolExecutor
     protected <T> RunnableFuture<T> newTaskFor(final Callable<T> callable) {
         return new ExceptionalFutureTask<T>(callable);
     }
-    
-    static {
-        LOGGER = LogManager.getLogger();
-    }
-    
-    public class ExceptionalFutureTask<T> extends FutureTask<T>
+
+    public static class ExceptionalFutureTask<T> extends FutureTask<T>
     {
         public ExceptionalFutureTask(final Callable<T> callable) {
             super(callable);

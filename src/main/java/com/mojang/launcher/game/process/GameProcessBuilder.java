@@ -82,6 +82,12 @@ public class GameProcessBuilder
     
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("processPath", this.processPath).add("arguments", this.arguments).add("sysOutFilter", this.sysOutFilter).add("directory", this.directory).add("logProcessor", this.logProcessor).toString();
+        return Objects.toStringHelper(this)
+                .add("processPath", this.processPath)
+                .add("arguments", this.arguments)
+                .add("sysOutFilter", this.sysOutFilter)
+                .add("directory", this.directory)
+                .add("logProcessor", this.logProcessor)
+                .toString();
     }
 }

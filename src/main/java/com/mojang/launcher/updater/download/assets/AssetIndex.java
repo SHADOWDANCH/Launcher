@@ -31,7 +31,7 @@ public class AssetIndex
         return this.virtual;
     }
     
-    public class AssetObject
+    public static class AssetObject
     {
         private String hash;
         private long size;
